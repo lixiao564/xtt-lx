@@ -1,0 +1,13 @@
+{
+  "name": "xtt-lx",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/lixiao564/xtt-lx.git",
+  "author": "lixiao564 <564113123@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10"
+  }
+}

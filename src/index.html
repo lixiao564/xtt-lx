@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="zeng()">增</button>
+    <button onclick="shan()">删</button>
+    <button onclick="gai()">改</button>
+    <button onclick="cha()">查</button>
+    <script src="./utils/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script>
+        function zeng() {
+            $.ajax({
+                type: "post",
+                url: "/user/add",
+                data: {
+                    name: 'lixiao',
+                    age: '24'
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        console.log(res.data)
+                    } else {
+                        alert(res.msg)
+                    }
+                }
+            });
+        }
+
+        function shan() {
+            $.ajax({
+                type: "delete",
+                url: "/user/delete",
+                data: {
+                    _id: '5c3c6d86a4427a38fcd1af29,5c3c6d86a4427a38fcd1af2a'
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        console.log(res.data)
+                    } else {
+                        alert(res.msg)
+                    }
+                }
+            });
+        }
+
+        function gai() {
+            $.ajax({
+                type: "put",
+                url: "/user/edit",
+                data: {
+                    _id: '5c3c7d81771cb20a4c2a178d',
+                    age: '21'
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        console.log(res.data)
+                    } else {
+                        alert(res.msg)
+                    }
+                }
+            });
+        }
+
+        function cha() {
+            $.ajax({
+                type: "get",
+                url: "/user/list",
+                success: function (res) {
+                    if (res.code == 0) {
+                        console.log(res.data)
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
