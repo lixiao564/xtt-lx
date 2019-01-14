@@ -6,6 +6,6 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, db) => {
     console.log('xtt-lx 数据库已连接');
     dbase.createCollection('user', (err, res) => {
         console.log('user 集合创建成功');
+        db.close();
     });
-    db.close();
 });
