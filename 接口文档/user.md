@@ -15,10 +15,11 @@
 ### 数据库字段
 
 - `_id`（主键，自动生成）
-- `name`
-- `age`
-- `area`
-- `education`
+- `tel` 手机号（不能有重复的）
+- `name` 用户名
+- `age` 年龄
+- `area` 地区
+- `education` 学历
 
 ### 增加
 
