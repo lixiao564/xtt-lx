@@ -59,9 +59,24 @@ router.put('/edit', (req, res) => {
 
 router.get('/list', (req, res) => {
     const query = req.query;
+    const page = parseInt(query.page);
+    const rows = parseInt(query.rows);
+    const start = rows * (page - 1);
+    const end = start + rows;
+    const where = {};
+    for (const key in query) {
+        const value = query[key];
+        if (key != 'page' && key != 'rows') {
+            where[key] = value;
+        }
+    }
+
     dbUtil.getTable('user').then(db => {
-        db.find(query).toArray((err, result) => {
-            res.send(dbUtil.setData(result));
+        db.find(where).toArray((err, result) => {
+            const data = {};
+            data.total = result.length;
+            data.rows = result.slice(start, end);
+            res.send(dbUtil.setData(data));
         });
     });
 });
