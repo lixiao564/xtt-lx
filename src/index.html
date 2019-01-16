@@ -4,79 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>首页</title>
+    <link rel="stylesheet" href="./public.css">
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./utils/jquery-easyui-1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" href="./utils/jquery-easyui-1.7.0/themes/icon.css">
 </head>
 <body>
-    <button onclick="zeng()">增</button>
-    <button onclick="shan()">删</button>
-    <button onclick="gai()">改</button>
-    <button onclick="cha()">查</button>
+
+        <div id="top" class="top">
+                <h1 class="h1">服务平台-xtt&lx</h1>
+                <button class="btn1">退出登录</button>
+            </div>
+            <div id="aside" class="aside">
+                <div id="first" class="first">
+                    <a href="./user/user.html" target="insert">首页</a>
+                </div>
+                <div id="list" class="easyui-accordion">
+                    <div title="安全管理">
+                        <a href="">配置管理</a><br>
+                        <a href="">专家管理</a><br>
+                    </div>
+                    <div title="信息管理">
+                        <a href="">终端管理</a><br>
+                        <a href="">营业厅管理</a><br>
+                        <a href="">代理商管理</a>
+                    </div>
+                    <div title="应用管理">
+                        <a href="">软件管理</a><br>
+                        <a href="">培训管理</a><br>
+                        <a href="">应用链接管理</a>
+                    </div>
+                    <div title="系统管理">
+                        <a href="">用户管理</a><br>
+                        <a href="">外渠组织架构</a>
+                    </div>
+                </div>
+                <div id="last" class="last"> <a href="">事务管理</a></div>
+            </div>
+        
+        
+            <div id="main" class="main">
+                <iframe src="./user/user.html" name="insert" frameborder="0" id="insert" class="insert">
+                </iframe>
+            </div>
+    
     <script src="./utils/jquery-easyui-1.7.0/jquery.min.js"></script>
-    <script>
-        function zeng() {
-            $.ajax({
-                type: "post",
-                url: "/user/add",
-                data: {
-                    name: 'lixiao',
-                    age: '24'
-                },
-                success: function (res) {
-                    if (res.code == 0) {
-                        console.log(res.data)
-                    } else {
-                        alert(res.msg)
-                    }
-                }
-            });
-        }
-
-        function shan() {
-            $.ajax({
-                type: "delete",
-                url: "/user/delete",
-                data: {
-                    _id: '5c3c6d86a4427a38fcd1af29,5c3c6d86a4427a38fcd1af2a'
-                },
-                success: function (res) {
-                    if (res.code == 0) {
-                        console.log(res.data)
-                    } else {
-                        alert(res.msg)
-                    }
-                }
-            });
-        }
-
-        function gai() {
-            $.ajax({
-                type: "put",
-                url: "/user/edit",
-                data: {
-                    _id: '5c3c7d81771cb20a4c2a178d',
-                    age: '21'
-                },
-                success: function (res) {
-                    if (res.code == 0) {
-                        console.log(res.data)
-                    } else {
-                        alert(res.msg)
-                    }
-                }
-            });
-        }
-
-        function cha() {
-            $.ajax({
-                type: "get",
-                url: "/user/list",
-                success: function (res) {
-                    if (res.code == 0) {
-                        console.log(res.data)
-                    }
-                }
-            });
-        }
-    </script>
+    <script src="./utils/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script src="./utils/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script src="./index.js"></script>
 </body>
 </html>

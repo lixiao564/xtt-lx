@@ -1,0 +1,61 @@
+/* 一般会写这两组，清除一下浏览器之间的差异 */
+
+
+/* css最好用类名来控制，不要用id */
+.top {
+    height: 80px;
+    background-color: #447896;
+    display: flex;
+    align-items: center;
+}
+.h1 {
+    color: white;
+    float: left;
+    margin-left: 20px;
+  
+}
+.btn1 {   
+    margin-left: auto;
+    background-color: rgb(219, 191, 63);
+    color: antiquewhite;
+    font-size: large;
+    margin-right: 20px;
+}
+.aside {
+    width: 200px;
+    background: #5997bb;
+    float: left;
+    height: calc(100% - 80px);
+}
+.first {
+    width:100%;
+    height: 30px;
+    background: #5997bb;
+    font-size: large;
+    text-align: left;
+    border: 0;
+}
+.easyui-accordion {
+    width:200px;
+    background: #5997bb;
+    font-size: large;
+}
+.last {
+    width:100%;
+    height: 30px;
+    background: #5997bb;
+    font-size: large;
+    text-align: left;
+    border: 0;
+}
+.main {
+    background: rgb(251, 255, 255);
+    margin-left: 200px;
+    height: calc(100% - 80px);
+}
+
+.insert {
+  width: 100%;
+  height: calc(100%);
+
+}
