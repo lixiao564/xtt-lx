@@ -39,6 +39,7 @@ $('#userlist').datagrid({
     url: '/user/list',
     method: 'get',
     fitColumns: true,
+    checkOnSelect: false,
     toolbar: [{
         iconCls: 'icon-edit',
         text: '新增',
@@ -46,56 +47,62 @@ $('#userlist').datagrid({
     }, '-', {
         iconCls: 'icon-clear',
         text: '删除',
-        handler: function () {
-
-        }
+        handler: deletuser
+    }, '-', {
+        iconCls: 'icon-edit',
+        text: '修改',
+        handler: edituser
     }],
-    // pagination: true,
+    pagination: true,
     columns: [
         [{
-            //     field: 'ck',
-            //     title: '□',
-            //     checkbox: true,
-            //     width: 50,
-            //     align: 'center'
-            // },
-            // {
-            //     field: 'list',
-            //     title: '#',
-            //     width: 50,
-            //     align: 'center'
-            // },
-            // {
-                field: 'name',
-                title: '姓名',
-                width: 150,
-                align: 'center'
-            }, {
-                field: 'code',
-                title: '工号',
-                width: 150,
-                align: 'center'
-            },
-            {
-                field: 'area',
-                title: '地址',
-                width: 150,
-                align: 'center'
-            },
-            {
-                field: 'education',
-                title: '教育水平',
-                width: 100,
-                align: 'center'
-            }
+            field: 'ck',
+            title: '□',
+            checkbox: true,
+            width: 50,
+            align: 'center'
+        },
+        {
+            field: 'name',
+            title: '姓名',
+            width: 150,
+            align: 'center'
+        }, {
+            field: 'code',
+            title: '工号',
+            width: 150,
+            align: 'center'
+        },
+        {
+            field: 'area',
+            title: '地址',
+            width: 150,
+            align: 'center'
+        },
+        {
+            field: 'education',
+            title: '教育水平',
+            width: 100,
+            align: 'center'
+        }
 
         ]
     ],
+    loadFilter: function (data) {
+        if (data.code == 0) {
+            return data.data;
+        } else {
+            return {
+                total: 0,
+                rows: []
+            }
+        }
+
+    }
 });
 
 function addUser() {
     $('#add').dialog({
-
         title: '添加用户',
         width: 600,
         height: 400,
@@ -110,26 +117,30 @@ function addUser() {
                 var id = $('#id').textbox('getValue')
                 var address = $("#address").textbox('getValue');
                 var school = $("#level").combobox('getValue');
-
-                var obj = {
-                    name: username,
-                    code: id,
-                    area: address,
-                    education: school
-                };          
-
-                $.ajax({
-                    type: 'post',
-                    url: '/user/add',
-                    data: obj,
-                    // 这个没用
-                    // dataType: 'dataType',
-                    success: function (resulut) {
-                        // 一般这个是要成功之后进行的操作，都放在回调函数里面
-                        $('#add').dialog('refresh');
-                        console.log(result);
-                    }
-                });
+                if (username == '' || id == '' || address == '' || school == '') {
+                    alert('请输入完整信息！')
+                } else {
+                    var obj = {
+                        name: username,
+                        code: id,
+                        area: address,
+                        education: school
+                    };
+                    $.ajax({
+                        type: 'post',
+                        url: '/user/add',
+                        data: obj,
+                        // 这个没用
+                        // dataType: 'dataType',
+                        success: function (result) {
+                            // 一般这个是要成功之后进行的操作，都放在回调函数里面           
+                            $('#add').dialog('close');
+                            alert('新增成功！')
+                            $('#userlist').datagrid('reload');
+                            // console.log(result);
+                        }
+                    });
+                }
             }
         }, {
             text: '关闭',
@@ -140,4 +151,108 @@ function addUser() {
             }
         }]
     });
+}
+
+function deletuser() {
+    var index = $('#userlist').datagrid('getChecked');
+    console.log(index);
+    if (index.length == 0) {
+        alert('没有选中行!');
+    } else {
+        var result = confirm('确认删除？');
+        var str = "";
+        if (result) {
+            // var ss = [];
+            //    for (var i=0; i<index.length; i++){
+            //    第一种拼接字符串方法，尾巴容易多一个符号和空白//    str += index[i]._id + ','; 
+            //    第二种拼接方法 用数组接收//  ss.push(index[i]._id);       
+            //     //  Map
+            //    } 
+            //第三种用数组接受拼接字符串
+            str = index.map(function (item) {
+                return item._id;
+            }).join(',');
+            //    var _id = JSON.parse(str); 
+            console.log(str);
+            $.ajax({
+                type: 'delete',
+                url: '/user/delete',
+                data: { _id: str },
+                success: function (result) {
+                    alert('删除成功');
+                    $('#userlist').datagrid('reload');
+                    console.log(result);
+                }
+            })
+        } else {
+            alert('删除失败！');
+        }
+    }
+
+}
+
+function edituser() {
+    var index = $('#userlist').datagrid('getChecked');
+    if (index.length == 0) {
+        alert('没有选中行!');
+    } else if (index.length >= 2) {
+        alert('无法修改多行数据！');
+    } else {
+        var obj = index[0];
+        console.log(obj);
+        var str = JSON.stringify(obj);
+        $("#data").val(str);
+        console.log(str);
+        $('#add').dialog({
+            title: '修改用户',
+            width: 600,
+            height: 400,
+            href: './add.html',
+            modal: true,
+            buttons: [{
+                text: '保存',
+                iconCls: 'icon-save',
+                // handler: function () {                    
+                //     // var result = confirm('确认删除？');
+                //     // var str = "";
+                //     // if(result) {
+
+                //     // } else {
+                //     //     alert('删除失败！');
+                //     // }
+                //     //     console.log(index);
+                //     var id = index._id;
+                //     var username = index.username;
+                //     var address = $("#address").textbox('getValue');
+                //     var school = $("#level").combobox('getValue');
+                //     var obj = {
+                //         name: username,
+                //         code: id,
+                //         area: address,
+                //         education: school
+                //     };
+                //     $.ajax({
+                //         type: 'put',
+                //         url: '/user/edit',
+                //         data: obj,
+                //         success: function (result) {
+                //             // 修改页面关闭          
+                //             $('#add').dialog('close');
+                //             alert('修改成功！')
+                //             $('#userlist').datagrid('reload');
+                //         }
+                //     });
+                // }
+            }            
+            , {
+                text: '关闭',
+                iconCls: 'icon-clear',
+                handler: function () {
+                    // 关闭
+                    $('#add').dialog('close')
+                }
+            }]
+        });
+}
+
 }

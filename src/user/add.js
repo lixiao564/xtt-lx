@@ -1,8 +1,15 @@
 
+$(function(){
+    var data = JSON.parse($("#data").val());
+$("#username").textbox('setValue',123);
+});
+
 $('#level').combobox({
     prompt:'教育水平',
     valueField:'value',    
     textField:'text',
+    editable: false,
+    required:true,
     data: [{
         value: 'primary',
         text: '小学'
