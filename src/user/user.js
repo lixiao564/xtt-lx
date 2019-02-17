@@ -28,10 +28,14 @@ $('#date2').datebox({
     required: true
 });
 $('#btn2').linkbutton({
-    iconCls: 'icon-search'
+    iconCls: 'icon-search',
+    
 });
 $('#btn3').linkbutton({
-    iconCls: 'icon-reload'
+    iconCls: 'icon-reload',
+    onClick: function(){
+        $('#userlist').datagrid('reload');
+    }
 });
 
 
@@ -41,7 +45,7 @@ $('#userlist').datagrid({
     fitColumns: true,
     checkOnSelect: false,
     toolbar: [{
-        iconCls: 'icon-edit',
+        iconCls: 'icon-add',
         text: '新增',
         handler: addUser
     }, '-', {
@@ -52,6 +56,10 @@ $('#userlist').datagrid({
         iconCls: 'icon-edit',
         text: '修改',
         handler: edituser
+    }, '-', {
+        iconCls: 'icon-search',
+        text: '查看',
+        handler: lookuser
     }],
     pagination: true,
     columns: [
@@ -100,8 +108,8 @@ $('#userlist').datagrid({
 
     }
 });
-
 function addUser() {
+    $("#data").val();
     $('#add').dialog({
         title: '添加用户',
         width: 600,
@@ -152,7 +160,6 @@ function addUser() {
         }]
     });
 }
-
 function deletuser() {
     var index = $('#userlist').datagrid('getChecked');
     console.log(index);
@@ -188,9 +195,7 @@ function deletuser() {
             alert('删除失败！');
         }
     }
-
 }
-
 function edituser() {
     var index = $('#userlist').datagrid('getChecked');
     if (index.length == 0) {
@@ -198,11 +203,11 @@ function edituser() {
     } else if (index.length >= 2) {
         alert('无法修改多行数据！');
     } else {
+        //将获取的数据以字符串形式存在主页面
         var obj = index[0];
-        console.log(obj);
         var str = JSON.stringify(obj);
         $("#data").val(str);
-        console.log(str);
+        //进入面板中再从主页面获取字符串数据
         $('#add').dialog({
             title: '修改用户',
             width: 600,
@@ -212,39 +217,36 @@ function edituser() {
             buttons: [{
                 text: '保存',
                 iconCls: 'icon-save',
-                // handler: function () {                    
-                //     // var result = confirm('确认删除？');
-                //     // var str = "";
-                //     // if(result) {
-
-                //     // } else {
-                //     //     alert('删除失败！');
-                //     // }
-                //     //     console.log(index);
-                //     var id = index._id;
-                //     var username = index.username;
-                //     var address = $("#address").textbox('getValue');
-                //     var school = $("#level").combobox('getValue');
-                //     var obj = {
-                //         name: username,
-                //         code: id,
-                //         area: address,
-                //         education: school
-                //     };
-                //     $.ajax({
-                //         type: 'put',
-                //         url: '/user/edit',
-                //         data: obj,
-                //         success: function (result) {
-                //             // 修改页面关闭          
-                //             $('#add').dialog('close');
-                //             alert('修改成功！')
-                //             $('#userlist').datagrid('reload');
-                //         }
-                //     });
-                // }
-            }            
-            , {
+                handler: function () {
+                    var result = confirm('确认修改？');
+                    if (result) {
+                        var username = $("#username").textbox('getValue');
+                        var id = $("#id").textbox('getValue');
+                        var address = $("#address").textbox('getValue');
+                        var school = $("#level").combobox('getValue');
+                        var obj = {
+                            name: username,
+                            code: id,
+                            area: address,
+                            education: school
+                        };
+                        $.ajax({
+                            type: 'put',
+                            url: '/user/edit',
+                            data: obj,
+                            success: function (result) {
+                                // 修改页面关闭          
+                                $('#add').dialog('close');
+                                $("#data").val({});
+                                alert('修改成功！')
+                                $('#userlist').datagrid('reload');
+                            }
+                        });
+                    } else {
+                        alert('修改失败！');
+                    }
+                }
+            }, {
                 text: '关闭',
                 iconCls: 'icon-clear',
                 handler: function () {
@@ -253,6 +255,39 @@ function edituser() {
                 }
             }]
         });
+    }
 }
-
+function lookuser() {
+    var index = $('#userlist').datagrid('getChecked');
+    if (index.length == 0) {
+        alert('没有选中行!');
+    } else if (index.length >= 2) {
+        alert('无法查看多行数据！');
+    } else {
+        var obj = index[0];
+        var str = JSON.stringify(obj);
+        $("#data").val(str);
+        $("#add").dialog({
+            title: '查看用户',
+            width: 600,
+            height: 400,
+            href: './detail.html',
+            modal: true,
+            buttons: [{
+                text: '确认',
+                iconCls: 'icon-ok',
+                handler: function () {
+                    $.ajax({
+                        type: 'get',
+                        url: '/user/list',
+                        data: obj,
+                        success: function (result) {
+                            // 修改页面关闭          
+                            $('#add').dialog('close');
+                            $("#data").val({});
+                        }
+                    });
+                }}]
+        });
+    }
 }

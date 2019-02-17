@@ -16,15 +16,51 @@
     <p>姓名</p><input type="text" name="username" id="username" class="easyui-textbox" data-options="prompt:'姓名',required:true">
     <p>工号</p><input type="text" name="id" id="id" class="easyui-textbox" data-options="prompt:'工号',required:true">
     <p>地址</p><input type="text" name="address" id="address" class="easyui-textbox" data-options="prompt:'地址',required:true">
-    <p>教育水平</p><input type="text" name="shcool" id="level">
-    <script>
-        var data = JSON.parse($("#data").val());
-        $("#username").textbox('setValue', 123);
-    </script>
+    <p>教育水平</p><input type="text" name="school" id="level">
+    <!-- <script>
+        $(function () {
+            setTimeout(() => {
+                var data = JSON.parse($("#data").val());
+                $("#username").textbox('setValue', data.name);
+                $("#id").textbox('setValue', data.code);
+                $("#address").textbox('setValue', data.area);
+                $("#level").combobox('setValue', data.education);
+            }, 0);
+
+        });
+        $('#level').combobox({
+            prompt: '教育水平',
+            valueField: 'value',
+            textField: 'text',
+            editable: false,
+            required: true,
+            data: [{
+                value: 'primary',
+                text: '小学'
+            }, {
+                value: 'senior',
+                text: '初中'
+            }, {
+                value: 'junior',
+                text: '高中'
+            }, {
+                value: 'college',
+                text: '大学'
+            }, {
+                value: 'graduated',
+                text: '研究生'
+            }]
+        });
+        
+        // var data1 = JSON.parse($("#data").val());
+        // // console.log(data1);
+        // $("#username").textbox('setValue', data.name);
+
+    </script> -->
     <!-- <script src="../utils/jquery-easyui-1.7.0/jquery.min.js"></script>
     <script src="../utils/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
     <script src="../utils/jquery-easyui-1.7.0/locale/easyui-lang-zh_CN.js"></script> -->
-    <!-- <script src="./add.js"></script> -->
+    <script src="./add.js"></script>
 </body>
 
 </html>
